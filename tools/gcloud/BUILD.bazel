@@ -1,0 +1,4 @@
+alias(
+    name = "gcloud",
+    actual = "//third_party/gcloud_sdks:gcloud"
+)

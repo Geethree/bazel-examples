@@ -1,0 +1,52 @@
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_tarball")
+load("@rules_pkg//pkg:pkg.bzl", "pkg_tar")
+load("@rules_python//python:pip.bzl", "compile_pip_requirements")
+load(":current_py_toolchain.bzl", "current_py_toolchain")
+
+compile_pip_requirements(
+    name = "requirements",
+    timeout = "long",
+    requirements_in = "requirements.in",
+    requirements_txt = "requirements_lock.txt",
+)
+
+current_py_toolchain(
+    name = "current_py_toolchain_runfiles",
+)
+
+pkg_tar(
+    name = "py_interpreter_toolchain",
+    # If we just used @rules_python//python:current_py_toolchain then we would end up with platform
+    # specific paths here. The current_py_toolchain_runfiles remaps the paths to be platform independent
+    srcs = [":current_py_toolchain_runfiles"],
+    extension = "tar.gz",
+    package_dir = "/opt/python",
+    strip_prefix = ".",
+    visibility = ["//visibility:public"],
+)
+
+pkg_tar(
+    name = "python_aliases",
+    symlinks = {
+        "/usr/bin/python": "/opt/python/bin/python3",
+        "/usr/bin/python3": "/opt/python/bin/python3",
+    },
+    visibility = ["//visibility:public"],
+)
+
+oci_image(
+    name = "py_base",
+    base = "@ubuntu",
+    tars = [
+        ":python_aliases",
+        ":py_interpreter_toolchain",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+oci_tarball(
+    name = "tarball",
+    image = ":py_base",
+    repo_tags = ["python:latest"]
+)
+
