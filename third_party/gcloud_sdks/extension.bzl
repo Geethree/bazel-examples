@@ -1,4 +1,5 @@
 load(":repositories.bzl", "gcloud_sdk_repositories")
+
 def _gcloud_sdk_extensions(mctx):
     gcloud_sdk_repositories()
 

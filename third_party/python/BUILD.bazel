@@ -49,7 +49,7 @@ gazelle_python_manifest(
     modules_mapping = ":modules_map",
     pip_repository_name = "pip",
 
-    # Not sure why this fails with 
+    # Not sure why this fails with
     # 2024/02/24 09:02:32 ERROR: failed to write output: open third_party/python/gazelle_python_requirements.txt: no such file or directory
     # requirements = [
     #     ":fake_requirements",

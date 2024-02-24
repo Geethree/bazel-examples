@@ -1,3 +1,4 @@
+load("@aspect_bazel_lib//lib:transitions.bzl", "platform_transition_filegroup")
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_tarball")
 load("@rules_pkg//pkg:pkg.bzl", "pkg_tar")
 load("@rules_python//python:pip.bzl", "compile_pip_requirements")
@@ -35,7 +36,7 @@ pkg_tar(
 )
 
 oci_image(
-    name = "py_base",
+    name = "_py_base",
     base = "@ubuntu",
     tars = [
         ":python_aliases",
@@ -44,9 +45,17 @@ oci_image(
     visibility = ["//visibility:public"],
 )
 
-oci_tarball(
-    name = "tarball",
-    image = ":py_base",
-    repo_tags = ["python:latest"]
+platform_transition_filegroup(
+    name = "py_base_image",
+    srcs = [":_py_base"],
+    target_platform = select({
+        "@platforms//cpu:arm64": "//platforms:linux_arm64",
+        "@platforms//cpu:x86_64": "//platforms:linux_amd64",
+    }),
 )
 
+oci_tarball(
+    name = "tarball",
+    image = ":py_base_iamge",
+    repo_tags = ["python:latest"],
+)

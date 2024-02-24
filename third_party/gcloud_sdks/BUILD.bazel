@@ -2,9 +2,9 @@
     sh_binary(
         name = tool,
         srcs = select({
-            "//platforms:linux_amd64": ["@gcloud_linux_amd64//:{}".format(tool)],
-            "//platforms:macos_amd64": ["@gcloud_darwin_amd64//:{}".format(tool)],
-            "//platforms:macos_arm64": ["@gcloud_darwin_arm64//:{}".format(tool)],
+            "//platforms/config:linux_amd64": ["@gcloud_linux_amd64//:{}".format(tool)],
+            "//platforms/config:macos_amd64": ["@gcloud_darwin_amd64//:{}".format(tool)],
+            "//platforms/config:macos_arm64": ["@gcloud_darwin_arm64//:{}".format(tool)],
         }),
         visibility = ["//visibility:public"],
     )
