@@ -15,5 +15,7 @@ package(default_visibility = ["//visibility:public"])
         "gcloud",
         "git-credential-gcloud",
         "gsutil",
+        "gcloud_tar",
+        "gcloud_aliases",
     ]
 ]

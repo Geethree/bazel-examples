@@ -1656,7 +1656,7 @@
   "moduleExtensions": {
     "//third_party/gcloud_sdks:extension.bzl%gcloud_sdks": {
       "general": {
-        "bzlTransitiveDigest": "Kvx2IZtcFameK7BcCBRRdZcI5W+2mt+/jFySZ7jCpoY=",
+        "bzlTransitiveDigest": "pKZJhPIB+xRx7pgNYgTcarM5fVPgUevgu8XOKelnKMM=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -1665,7 +1665,7 @@
             "ruleClassName": "http_archive",
             "attributes": {
               "name": "_main~gcloud_sdks~gcloud_darwin_amd64",
-              "build_file_content": "\npackage(default_visibility = [\"//visibility:public\"])\n\nexports_files([\"gcloud\", \"gsutil\", \"bq\", \"git-credential-gcloud\"])\nfilegroup(\n    name = \"google-cloud-sdk\",\n    srcs = glob([\n        \"**\"\n    ]),\n)\n",
+              "build_file": "@@//third_party/gcloud_sdks:gcloud_sdk.BUILD.bazel",
               "patch_cmds": [
                 "ln -s google-cloud-sdk/bin/gcloud gcloud",
                 "ln -s google-cloud-sdk/bin/gsutil gsutil",
@@ -1681,7 +1681,7 @@
             "ruleClassName": "http_archive",
             "attributes": {
               "name": "_main~gcloud_sdks~gcloud_darwin_arm64",
-              "build_file_content": "\npackage(default_visibility = [\"//visibility:public\"])\n\nexports_files([\"gcloud\", \"gsutil\", \"bq\", \"git-credential-gcloud\"])\nfilegroup(\n    name = \"google-cloud-sdk\",\n    srcs = glob([\n        \"**\"\n    ]),\n)\n",
+              "build_file": "@@//third_party/gcloud_sdks:gcloud_sdk.BUILD.bazel",
               "patch_cmds": [
                 "ln -s google-cloud-sdk/bin/gcloud gcloud",
                 "ln -s google-cloud-sdk/bin/gsutil gsutil",
@@ -1697,7 +1697,7 @@
             "ruleClassName": "http_archive",
             "attributes": {
               "name": "_main~gcloud_sdks~gcloud_linux_amd64",
-              "build_file_content": "\npackage(default_visibility = [\"//visibility:public\"])\n\nexports_files([\"gcloud\", \"gsutil\", \"bq\", \"git-credential-gcloud\"])\nfilegroup(\n    name = \"google-cloud-sdk\",\n    srcs = glob([\n        \"**\"\n    ]),\n)\n",
+              "build_file": "@@//third_party/gcloud_sdks:gcloud_sdk.BUILD.bazel",
               "patch_cmds": [
                 "ln -s google-cloud-sdk/bin/gcloud gcloud",
                 "ln -s google-cloud-sdk/bin/gsutil gsutil",

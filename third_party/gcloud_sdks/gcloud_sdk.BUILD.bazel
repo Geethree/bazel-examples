@@ -1,0 +1,65 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files", "strip_prefix")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+
+package(default_visibility = ["//visibility:public"])
+
+exports_files(["gcloud", "gsutil", "bq", "git-credential-gcloud"])
+filegroup(
+    name = "google-cloud-sdk-files",
+    srcs = glob(
+        ["google-cloud-sdk/**"],
+    ),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "google-cloud-sdk-bin-files",
+    srcs = glob(
+        ["google-cloud-sdk/bin/*"],
+    ),
+    visibility = ["//visibility:public"],
+)
+
+# Ignore the bin directory, as we're handling it separately to set execute permissions
+pkg_files(
+    name = "google-cloud-sdk",
+    srcs = [
+        ":google-cloud-sdk-files",
+    ],
+    excludes = ["google-cloud-sdk/bin/*"],
+    # Where it should be in the final package
+    prefix = "gcloud",
+    # Required, but why?: see #354
+    strip_prefix = strip_prefix.from_pkg(),
+)
+
+# Set execute permissions on the bin directory
+pkg_files(
+    name = "google-cloud-sdk-bin",
+    srcs = [
+        ":google-cloud-sdk-bin-files",
+    ],
+    attributes = pkg_attributes(
+        mode = "0755",
+    ),
+    prefix = "gcloud",
+    strip_prefix = strip_prefix.from_pkg(),
+)
+
+pkg_tar(
+    name = "gcloud_aliases",
+    symlinks = {
+        "/usr/local/bin/gcloud": "/gcloud/google-cloud-sdk/bin/gcloud",
+        "/usr/local/bin/gsutil": "/gcloud/google-cloud-sdk/bin/gsutil",
+        "/usr/local/bin/bq": "/gcloud/google-cloud-sdk/bin/bq",
+    },
+    visibility = ["//visibility:public"],
+)
+
+pkg_tar(
+    name = "gcloud_tar",
+    srcs = [
+        ":google-cloud-sdk",
+        ":google-cloud-sdk-bin",
+    ],
+)

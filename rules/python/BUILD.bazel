@@ -4,6 +4,8 @@ load("@rules_pkg//pkg:pkg.bzl", "pkg_tar")
 load("@rules_python//python:pip.bzl", "compile_pip_requirements")
 load(":current_py_toolchain.bzl", "current_py_toolchain")
 
+package(default_visibility = ["//visibility:public"])
+
 compile_pip_requirements(
     name = "requirements",
     timeout = "long",
