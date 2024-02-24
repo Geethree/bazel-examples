@@ -1,0 +1,35 @@
+load("@aspect_bazel_lib//lib:transitions.bzl", "platform_transition_filegroup")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_tarball")
+load("@rules_pkg//pkg:pkg.bzl", "pkg_tar")
+
+pkg_tar(
+    name = "gcloud_tar",
+    srcs = ["@gcloud_linux_amd64//:gcloud"],
+    package_dir = "/gcloud",
+)
+
+oci_image(
+    name = "gcloud_image",
+    base = "@ubuntu",
+    tars = [
+        ":gcloud_tar",
+        "//rules/python:python_aliases",
+        "//rules/python:py_interpreter_toolchain",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+platform_transition_filegroup(
+    name = "platform_gcloud_image",
+    srcs = [":gcloud_image"],
+    target_platform = select({
+        "@platforms//cpu:arm64": "//platforms:linux_arm64",
+        "@platforms//cpu:x86_64": "//platforms:linux_amd64",
+    }),
+)
+
+oci_tarball(
+    name = "tarball",
+    image = ":platform_gcloud_image",
+    repo_tags = ["gcloud:latest"],
+)
